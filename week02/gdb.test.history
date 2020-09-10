@@ -1,0 +1,19 @@
+set logging file gdb.test.log
+set logging on
+set history filename gdb.test.history
+set history save
+run
+break 8
+s
+run
+print sum
+s
+s
+print sum
+c
+print sum
+c
+print sum
+clear 8
+c
+quit

@@ -1,0 +1,29 @@
+Starting program: /home/jungmin/SystemProgramming/week02/sum 
+warning: Error disabling address space randomization: Operation not permitted
+[Inferior 1 (process 821) exited normally]
+Breakpoint 1 at 0x560dbd13a669: file ./sum.c, line 8.
+The program is not being run.
+Starting program: /home/jungmin/SystemProgramming/week02/sum 
+warning: Error disabling address space randomization: Operation not permitted
+
+Breakpoint 1, main (argc=1, argv=0x7ffc26a61398) at ./sum.c:8
+8			sum += i;
+$1 = 0
+7		for(i = 1; i <= 500; ++i){
+
+Breakpoint 1, main (argc=1, argv=0x7ffc26a61398) at ./sum.c:8
+8			sum += i;
+$2 = 1
+Continuing.
+
+Breakpoint 1, main (argc=1, argv=0x7ffc26a61398) at ./sum.c:8
+8			sum += i;
+$3 = 3
+Continuing.
+
+Breakpoint 1, main (argc=1, argv=0x7ffc26a61398) at ./sum.c:8
+8			sum += i;
+$4 = 6
+Deleted breakpoint 1 
+Continuing.
+[Inferior 1 (process 825) exited normally]
