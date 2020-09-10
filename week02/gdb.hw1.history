@@ -1,0 +1,47 @@
+set logging file gdb.hw1.log
+set logging on
+set history filename gdb.hw1.history
+set history save
+run
+break 3
+run
+next
+next
+next
+next
+next
+-3
+next
+next
+next
+next
+print D
+next
+next
+next
+next
+next
+break 20
+break 21
+run
+next
+c
+c
+break 21
+break 20
+run
+c
+c
+print D
+whatis D
+next
+print D
+set var D=-1
+next
+next
+next
+next
+next
+next
+next
+quit

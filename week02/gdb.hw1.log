@@ -1,7 +1,7 @@
 Starting program: /home/jungmin/SystemProgramming/week02/buggy_factorization 
 warning: Error disabling address space randomization: Operation not permitted
-[Inferior 1 (process 1105) exited normally]
-Breakpoint 1 at 0x55ff78bf87e2: file ./buggy_factorization.c, line 5.
+[Inferior 1 (process 1163) exited normally]
+Breakpoint 1 at 0x5595b24067e2: file ./buggy_factorization.c, line 3.
 Starting program: /home/jungmin/SystemProgramming/week02/buggy_factorization 
 warning: Error disabling address space randomization: Operation not permitted
 
@@ -12,22 +12,65 @@ Breakpoint 1, main () at ./buggy_factorization.c:5
 12		scanf("%d", &a);
 14		printf("b: ");
 15		scanf("%d", &b);
+Undefined command: "-3".  Try "help".
 17		printf("c: ");
 18		scanf("%d", &c);
 20		D = b*b + 4*a*c;
-Breakpoint 2 at 0x55b681778878: file ./buggy_factorization.c, line 20.
-Breakpoint 3 at 0x55b68177889c: file ./buggy_factorization.c, line 21.
-$1 = 4.6561904802811816e-310
-
-Breakpoint 3, main () at ./buggy_factorization.c:21
 21		if(D < 0){
-$2 = 17
+$1 = 17
 27			printf("Impossible\n");
 28		return 0;
 29	}
-__libc_start_main (main=0x55b6817787da <main>, argc=1, argv=0x7ffd03543e58, init=<optimized out>, fini=<optimized out>, 
-    rtld_fini=<optimized out>, stack_end=0x7ffd03543e48) at ../csu/libc-start.c:344
+__libc_start_main (main=0x560b99ae87da <main>, argc=1, argv=0x7fff2aeccf28, init=<optimized out>, fini=<optimized out>, 
+    rtld_fini=<optimized out>, stack_end=0x7fff2aeccf18) at ../csu/libc-start.c:344
 344	../csu/libc-start.c: No such file or directory.
+[Inferior 1 (process 1167) exited normally]
+Breakpoint 2 at 0x7fe90df0eab0: file ../csu/libc-start.c, line 20.
+Note: breakpoint 2 also set at pc 0x7fe90df0eab0.
+Breakpoint 3 at 0x7fe90df0eab0: file ../csu/libc-start.c, line 21.
+Starting program: /home/jungmin/SystemProgramming/week02/buggy_factorization 
+warning: Error disabling address space randomization: Operation not permitted
+
+Breakpoint 2, __libc_start_main (main=0x563a5ac7a7da <main>, argc=1, argv=0x7ffe23737078, 
+    init=0x563a5ac7a990 <__libc_csu_init>, fini=0x563a5ac7aa00 <__libc_csu_fini>, rtld_fini=0x7fe81a9719f0 <_dl_fini>, 
+    stack_end=0x7ffe23737068) at ../csu/libc-start.c:137
+137	../csu/libc-start.c: No such file or directory.
+141	in ../csu/libc-start.c
 Continuing.
-[Inferior 1 (process 1109) exited normally]
-The program is not being run.
+
+Breakpoint 1, main () at ./buggy_factorization.c:5
+5	{
+Continuing.
+[Inferior 1 (process 1168) exited normally]
+Breakpoint 4 at 0x563a5ac7a89c: file ./buggy_factorization.c, line 21.
+Breakpoint 5 at 0x563a5ac7a878: file ./buggy_factorization.c, line 20.
+Starting program: /home/jungmin/SystemProgramming/week02/buggy_factorization 
+warning: Error disabling address space randomization: Operation not permitted
+
+Breakpoint 2, __libc_start_main (main=0x55eca02d57da <main>, argc=1, argv=0x7ffece4dc868, 
+    init=0x55eca02d5990 <__libc_csu_init>, fini=0x55eca02d5a00 <__libc_csu_fini>, rtld_fini=0x7f7c52a609f0 <_dl_fini>, 
+    stack_end=0x7ffece4dc858) at ../csu/libc-start.c:137
+137	../csu/libc-start.c: No such file or directory.
+Continuing.
+
+Breakpoint 1, main () at ./buggy_factorization.c:5
+5	{
+Continuing.
+
+Breakpoint 5, main () at ./buggy_factorization.c:20
+20		D = b*b + 4*a*c;
+$2 = 4.6676747133828298e-310
+type = double
+
+Breakpoint 4, main () at ./buggy_factorization.c:21
+21		if(D < 0){
+$3 = 9
+22			alpha = ((-1 * b) + sqrt(D)) / (double)(2 * a);
+23			beta = ((-1 * b) - sqrt(D)) / (double)(2 * a);
+24			printf("%d(x%+.2f)(x%+.2f) = 0\n",a, -1 * alpha, -1 * beta);
+28		return 0;
+29	}
+__libc_start_main (main=0x55eca02d57da <main>, argc=1, argv=0x7ffece4dc868, init=<optimized out>, fini=<optimized out>, 
+    rtld_fini=<optimized out>, stack_end=0x7ffece4dc858) at ../csu/libc-start.c:344
+344	../csu/libc-start.c: No such file or directory.
+[Inferior 1 (process 1169) exited normally]
