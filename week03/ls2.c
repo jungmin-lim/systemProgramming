@@ -9,11 +9,13 @@
 #include <grp.h>
 
 void do_ls(char []);
-void dostat(char *);
+void dostat(struct dirent *, DIR *);
 void show_file_info(char *, struct stat *);
 void mode_to_letters(int, char []);
 char *uid_to_name(uid_t);
 char *gid_to_name(gid_t);
+
+blksize_t total = 0;
 
 int main(int argc, char *argv[]){
 	if(argc == 1){
@@ -35,20 +37,37 @@ void do_ls(char dirname[]){
 		fprintf(stderr, "ls2: cannot open %s\n", dirname);
 	
 	else{
-		while((direntp = readdir(dir_ptr)) != NULL)
-			dostat(direntp->d_name);
+		if((direntp = readdir(dir_ptr)) != NULL)
+			dostat(direntp, dir_ptr);
 
 		closedir(dir_ptr);
 	}
 }
 
-void dostat(char *filename){
+void dostat(struct dirent *direntp, DIR *dir_ptr){
 	struct stat info;
+	char filename[50];
+	int namelength;
 
-	if(stat(filename, &info) == -1)
-		perror(filename);
-	else
-		show_file_info(filename, &info);
+	if(stat(direntp->d_name, &info) == -1)
+		perror(direntp->d_name);
+	else{
+		namelength = strlen(direntp->d_name);
+		strcpy(filename, direntp->d_name);
+		filename[namelength] = '\0';
+
+		if((direntp = readdir(dir_ptr)) != NULL){
+			total = total + info.st_blocks;
+			dostat(direntp, dir_ptr);
+			show_file_info(filename, &info);
+		}
+		else{
+			total = total + info.st_blocks;
+			printf("total %ld\n", total/2);
+			show_file_info(filename, &info);
+		}
+	}
+	return;
 }
 
 void show_file_info(char *filename, struct stat *info_p){
