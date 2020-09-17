@@ -67,7 +67,7 @@ void show_file_info(char *filename, struct stat *info_p){
 }
 
 void mode_to_letters(int mode, char str[]){
-	strcpy(str, "------------");	
+	strcpy(str, "----------");
 
 	if(S_ISDIR(mode)) str[0] = 'd';
 	if(S_ISCHR(mode)) str[0] = 'c';
