@@ -9,7 +9,7 @@
 #include <grp.h>
 
 void do_ls(char []);
-void dostat(struct dirent *, DIR *);
+void dostat(struct dirent *, DIR *, char []);
 void show_file_info(char *, struct stat *);
 void mode_to_letters(int, char []);
 char *uid_to_name(uid_t);
@@ -38,27 +38,24 @@ void do_ls(char dirname[]){
 	
 	else{
 		if((direntp = readdir(dir_ptr)) != NULL)
-			dostat(direntp, dir_ptr);
+			dostat(direntp, dir_ptr, dirname);
 
 		closedir(dir_ptr);
 	}
 }
 
-void dostat(struct dirent *direntp, DIR *dir_ptr){
+void dostat(struct dirent *direntp, DIR *dir_ptr, char dirname[]){
 	struct stat info;
-	char filename[50];
-	int namelength;
+	char filename[1024];
 
-	if(stat(direntp->d_name, &info) == -1)
+	sprintf(filename, "%s/%s", dirname, direntp->d_name);
+	if(stat(filename, &info) == -1)
 		perror(direntp->d_name);
 	else{
-		namelength = strlen(direntp->d_name);
-		strcpy(filename, direntp->d_name);
-		filename[namelength] = '\0';
 
 		if((direntp = readdir(dir_ptr)) != NULL){
 			total = total + info.st_blocks;
-			dostat(direntp, dir_ptr);
+			dostat(direntp, dir_ptr, dirname);
 			show_file_info(filename, &info);
 		}
 		else{
