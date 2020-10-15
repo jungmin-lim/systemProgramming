@@ -71,5 +71,6 @@ int main(){
     set_nodelay_mode();
     response = get_response(ASK, TRIES);
     tty_mode(1);
+    fprintf(stdout, "\n");
     return response;
 }
