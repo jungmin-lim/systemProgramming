@@ -97,7 +97,7 @@ void do_ls(char dirname[], int sort_by_size){
 				do_size_sorted_stat(direntp, dir_ptr, dirname);
 		
 				// sort list by size 
-				qsort(files, count, sizeof(FILEINFO), cmp_size_val);
+				qsort(files, count+1, sizeof(FILEINFO), cmp_size_val);
 
 				// print result
 				for(i = 0; i <= count; ++i){
@@ -133,7 +133,6 @@ void dostat(struct dirent *direntp, DIR *dir_ptr, char dirname[]){
 		// terminal node
 		else{
 			total = total + info.st_blocks;
-			printf("total %ld\n", total/2);
 			show_file_info(filename, &info);
 		}
 	}
@@ -168,7 +167,6 @@ void do_size_sorted_stat(struct dirent *direntp, DIR *dir_ptr, char dirname[]){
 		// terminal node
 		else{
 			total = total + files[count].info.st_blocks;
-			printf("total %ld\n", total/2);
 		}
 	}
 	return;
@@ -204,7 +202,6 @@ void do_recursive_stat(struct dirent *direntp, DIR *dir_ptr, char dirname[]){
 		// terminal node
 		else{
 			total = total + files[count].info.st_blocks;
-			printf("total %ld\n", total/2);
 		}
 	}
 	return;
