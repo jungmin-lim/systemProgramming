@@ -15,7 +15,7 @@ void calendar();
 int main(int argc, char *argv[]){
 
 	now = time(NULL);
-	tm t = *localtime(&now);
+	t = *localtime(&now);
 
 
 	// init
@@ -49,12 +49,4 @@ int main(int argc, char *argv[]){
 }
 
 void calendar(){
-	char buf[2048]; 
-	attrset(COLOR_PAIR(0));
-	move(2, 0);
-	sprintf(buf, "------%d--%2d------", t.tm_year + 1900, t.tm_mon + 1);
-	addstr(buf);
-	move(3, 0);
-	addstr("Su Mo Tu We Th Fr Sa");
-
 }
