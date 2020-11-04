@@ -53,18 +53,27 @@ int main(int argc, char *argv[]){
 		if(!strcmp(argv[1], "-S") || !strcmp(argv[1], "-s")){
 			// directory not specified
 			if(argc == 2){
-				do_ls(".", TRUE);
+				do_ls(".", 1);
 			}
 			// directory specified
 			else{
 				for(i = 2; i < argc; ++i){
-					do_ls(argv[i], TRUE);
+					do_ls(argv[i], 1);
 				}
 			}
 		}
 
 		else if(!strcmp(argv[1], "-R") || !strcmp(argv[1], "-r")){
-
+			// directory not specified
+			if(argc == 2){
+				do_ls(".", 2);
+			}
+			// directory specified
+			else{
+				for(i = 2; i < argc; ++i){
+					do_ls(argv[i], 2);
+				}
+			}
 		}
 
 		else if(!strcmp(argv[1], "-SR") || !strcmp(argv[1], "-sr") ||
@@ -82,7 +91,7 @@ int main(int argc, char *argv[]){
 }
 
 // check availability of direcotry
-void do_ls(char dirname[], int sort_by_size){
+void do_ls(char dirname[], int option){
 	DIR *dir_ptr;
 	struct dirent* direntp;
 	int i;
@@ -92,7 +101,7 @@ void do_ls(char dirname[], int sort_by_size){
 	
 	else{
 		if((direntp = readdir(dir_ptr)) != NULL){
-			if(sort_by_size){
+			if(option == 1){
 
 				do_size_sorted_stat(direntp, dir_ptr, dirname);
 		
@@ -102,6 +111,12 @@ void do_ls(char dirname[], int sort_by_size){
 				// print result
 				for(i = 0; i <= count; ++i){
 					show_file_info(files[i].filename, &(files[i].info));
+				}
+			}
+			else if(option == 2){
+				do_recursive_stat(direntp, dir_ptr, dirname);
+
+				while(count-- >= 0){
 				}
 			}
 			else{
