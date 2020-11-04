@@ -39,7 +39,7 @@ int set_ticker(int n_msecs){
 void move_ball(int signum){
     signal(SIGALRM, move_ball);
     move(row, col);
-    addstr(BLANK);
+    addstr(" ");
 	row += rowdir;
     col += coldir;
     move((int)row, (int)col);

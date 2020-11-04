@@ -12,12 +12,13 @@
 #define BLANK   "  "
 
 double row, col; 
-int bar1, bar2;
 double top_row, bot_row;
 double l_edge, r_edge;
 double rowdir, coldir;
-int score1, score2;
 char symbol[8];
+
+int bar1, bar2;
+int score1, score2;
 char scorebuf[64];
 
 void quit_handler(int s){
@@ -39,70 +40,106 @@ int set_ticker(int n_msecs){
     return setitimer(ITIMER_REAL, &new_timeset, NULL);
 }
 
+void update_score(){
+	sprintf(scorebuf, "<score> %d:%d", score1, score2);
+	
+	if(score1 >= 15){
+		sprintf(scorebuf, "<score> %d:%d, player1 wins!", score1, score2);
+		sleep(3);
+		endwin();
+		exit(1);
+	}
+	else if (score2 >= 15){
+		sprintf(scorebuf, "<score> %d:%d player2 wins!", score1, score2);
+		sleep(3);
+		endwin();
+		exit(1);
+	}
+	move(bot_row+1, l_edge+1);
+	addstr(scorebuf);
+
+	refresh();
+}
+
+
 void move_ball(int signum){
     signal(SIGALRM, move_ball);
     move(row, col);
-    addstr(BLANK);
+    addstr(" ");
 	row += rowdir;
     col += coldir;
     move((int)row, (int)col);
     addstr(symbol);
     refresh();
 
-    if(coldir < 0 && col <= l_edge) coldir = -coldir;
-	else if(coldir > 0 && col+1 >= r_edge) coldir = -coldir;
+    if(coldir < 0 && col < l_edge-coldir+2) {
+		coldir = -coldir;
+		if(!(row < bar1+5 && row >= bar1)){
+			score2++;
+			move((int)row, (int)col);
+			addstr(" ");
+			update_score();
+			sleep(2);
+			row = bar1+2;
+			col = l_edge+2;
+		}
+	}
+	else if(coldir > 0 && col > r_edge-coldir-3){
+		coldir = -coldir;
+		if(!(row < bar2+5 && row >= bar2)){
+			score1++;
+			move((int)row, (int)col);
+			addstr(" ");
+			update_score();
+			sleep(2);
+			row = bar2+2;
+			col = r_edge-2;
+		}
+	}
 
-	if(rowdir < 0 && row <= top_row) rowdir = -rowdir;
-    else if(rowdir > 0 && row >= bot_row) rowdir = -rowdir;
+	if(rowdir < 0 && row < top_row-rowdir+1) rowdir = -rowdir;
+    else if(rowdir > 0 && row > bot_row-rowdir-1) rowdir = -rowdir;
 
     return;
 }
 
 void move_bar(int player, int dir){
 	if(player){
-		if(dir > 0){
-			move(bar1, 0);
+		if(dir > 0 && bar1 < bot_row - 5){
+			move(bar1, l_edge+1);
 			addstr(" ");
 			bar1 = bar1 + dir;
-			move(bar1+4, 0);
+			move(bar1+4, l_edge+1);
 			addstr("|");
 		}
-		else{
-			move(bar1+4, 0);
+		else if(dir < 0 && bar1 > top_row + 1){
+			move(bar1+4, l_edge+1);
 			addstr(" ");
 			bar1 = bar1 + dir;
-			move(bar1, 0);
+			move(bar1, l_edge+1);
 			addstr("|");
 		}
 	}
 	else{
-		if(dir > 0){
-			move(bar2, 41);
+		if(dir > 0 && bar2 < bot_row - 5){
+			move(bar2, r_edge-1);
 			addstr(" ");
 			bar2 = bar2 + dir;
-			move(bar2+4, 41);
+			move(bar2+4, r_edge-1);
 			addstr("|");
 		}
-		else{
-			move(bar2+4, 41);
+		else if(dir < 0 && bar2 > top_row + 1){
+			move(bar2+4, r_edge-1);
 			addstr(" ");
 			bar2 = bar2 + dir;
-			move(bar2, 41);
+			move(bar2, r_edge-1);
 			addstr("|");
 		}
 	}
 
 	refresh();
 }
-
-void update_score(){
-	sprintf(scorebuf, "<score> %d:%d", score1, score2);
-	move(0, 0);
-	addstr(scorebuf);
-
-	refresh();
-}
-
+		
 int main(int argc, char *argv[]){
     int delay;
     int ndelay;
@@ -110,18 +147,48 @@ int main(int argc, char *argv[]){
     void move_ball(int);
 	void quit_handler(int);
 
-	// init
-	strcpy(symbol, "o");
-	row = 5; col = 0; 
-	bar1 = 4; bar2 = 4;
-	top_row = 1; bot_row = 10;
-	l_edge = 1; r_edge = 40;
+	if(argc != 8){
+		fprintf(stderr, "Usage: %s <symbol> <ball_start_col> <ball_start_row> \
+				<top_row> <bot_row> <l_edge> <r_edge>\n", argv[0]);
+		exit(-1);
+
+	}
+
+	strcpy(symbol, argv[1]);
+	col = atoi(argv[2]);
+	row = atoi(argv[3]);
+
+	top_row = atoi(argv[4]);
+	bot_row = atoi(argv[5]);
+
+	l_edge = atoi(argv[6]);
+	r_edge = atoi(argv[7]);
+
+	bar1 = (top_row + bot_row) / 2;
+	bar2 = (top_row + bot_row) / 2;
+
 	score1 = 0; score2 = 0;
 
     initscr();
     crmode();
     noecho();
     clear();
+
+	for(i = l_edge; i <= r_edge; ++i){
+		move(top_row, i);
+		addstr("-");
+		move(bot_row, i);
+		addstr("-");
+	}
+
+	for(i = top_row+1; i < bot_row; ++i){
+		move(i, l_edge);
+		addstr("|");
+		move(i, r_edge);
+		addstr("|");
+	}
+
+	update_score();
 
     coldir = 1; rowdir = 1;
     delay = 200;
@@ -130,9 +197,9 @@ int main(int argc, char *argv[]){
     addstr(symbol);
 
 	for(i = 0; i < 4; ++i){
-		move(bar1+i, 0);
+		move(bar1+i, l_edge+1);
 		addstr("|");
-		move(bar2+i, 41);
+		move(bar2+i, r_edge-1);
 		addstr("|");
 	}
 
@@ -160,19 +227,21 @@ int main(int argc, char *argv[]){
 		if(c == 'r') {
 			if(coldir < 0)	 	coldir -= 0.10;
 			else if(coldir > 0) coldir += 0.10;
-		
 		}
 		if(c == 'a') {
-			if(bar1 >1) move_bar(1, -1);
+			move_bar(1, -1);
 		}
+
 		if(c == 's') {
-			if(bar1 < 10) move_bar(1, 1);
+			move_bar(1, 1);
 		}
+
 		if(c == 'k') {
-			if(bar2 >1) move_bar(0, -1);
+			move_bar(0, 1);
 		}
+
 		if(c == 'l') {
-			if(bar2 < 10) move_bar(0, 1);
+			move_bar(0, -1);
 		}
     }
     endwin();
