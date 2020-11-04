@@ -45,12 +45,18 @@ void update_score(){
 	
 	if(score1 >= 15){
 		sprintf(scorebuf, "<score> %d:%d, player1 wins!", score1, score2);
+		move(bot_row+1, l_edge+1);
+		addstr(scorebuf);
+		refresh();
 		sleep(3);
 		endwin();
 		exit(1);
 	}
 	else if (score2 >= 15){
 		sprintf(scorebuf, "<score> %d:%d player2 wins!", score1, score2);
+		move(bot_row+1, l_edge+1);
+		addstr(scorebuf);
+		refresh();
 		sleep(3);
 		endwin();
 		exit(1);
