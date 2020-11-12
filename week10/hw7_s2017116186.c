@@ -86,22 +86,22 @@ void child_child_proc(char operator){
 
 	switch(operator){
 		case '+':
-			printf("\t\t%.0lf + %.0lf = %.1lf\n", op1, op2, op1+op2);	
+			printf("\t\t%d + %d = %.1lf\n", (int)op1, (int)op2, op1+op2);	
 			printf("\t\tChild %d dead. :)\n", getpid());
 			exit(16);
 			break;
 		case '-':
-			printf("\t\t%.0lf - %.0lf = %.1lf\n", op1, op2, op1-op2);	
+			printf("\t\t%d - %d = %.1lf\n", (int)op1, (int)op2, op1-op2);	
 			printf("\t\tChild %d dead. :)\n", getpid());
 			exit(16);
 			break;
 		case '*':
-			printf("\t\t%.0lf * %.0lf = %.1lf\n", op1, op2, op1*op2);	
+			printf("\t\t%d * %d = %.1lf\n", (int)op1, (int)op2, op1*op2);	
 			printf("\t\tChild %d dead. :)\n", getpid());
 			exit(16);
 			break;
 		case '/':
-			printf("\t\t%.0lf / %.0lf = %.1lf\n", op1, op2, op1/op2);	
+			printf("\t\t%d / %d = %.1lf\n", (int)op1, (int)op2, op1/op2);	
 			printf("\t\tChild %d dead. :)\n", getpid());
 			exit(16);
 			break;
