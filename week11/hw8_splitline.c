@@ -1,7 +1,7 @@
 #include	<stdio.h>
 #include	<stdlib.h>
 #include	<string.h>
-#include	"smsh.h"
+#include	"hw8_smsh.h"
 
 char * next_cmd(char *prompt, FILE *fp, int *isBackground){
 	char	*buf ; 				/* the buffer		*/

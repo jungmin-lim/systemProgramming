@@ -1,19 +1,16 @@
 #include	<stdio.h>
 #include	<stdlib.h>
+#include	<string.h>
 #include	<unistd.h>
 #include	<signal.h>
-#include 	<sys/wait.h>
-#include	"smsh.h"
+#include	"hw8_smsh.h"
 
 #define	DFL_PROMPT	"> "
 
-void func(int signum){
-	wait(NULL);
-}
-
-int main(){
+int main()
+{
 	char	*cmdline, *prompt, **arglist;
-	int	result, isBackground, pid;
+	int	result, isBackground, c_pid = 0;
 	void	setup();
 
 	prompt = DFL_PROMPT ;
@@ -21,24 +18,19 @@ int main(){
 
 	while ( (cmdline = next_cmd(prompt, stdin, &isBackground)) != NULL ){
 		if ( (arglist = splitline(cmdline)) != NULL  ){
+			if(!strcmp(arglist[0], "exit")){
+				arglist = NULL;
+				kill(0, 2);
+				return 0;
+			}
+
 			if(isBackground){
-				pid = fork();
-				if(pid == 0){
-					// execute command on child
-					printf("PID : %d\n", getpid());
-					result = execute(arglist);
-					freelist(arglist);
-					exit(1);
-				}
-				else{
-					signal(SIGCHLD, func);
-					freelist(arglist);
-				}
+				result = execute_background(arglist, &c_pid);
 			}
 			else{
 				result = execute(arglist);
-				freelist(arglist);
 			}
+			freelist(arglist);
 		}
 		free(cmdline);
 	}
