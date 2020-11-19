@@ -6,7 +6,7 @@
 #define	CLOSE_DUP
 #define MAXLINE 100
 
-const char* TARGET_FILE = "etc/passwd";
+const char* TARGET_FILE = "/etc/passwd";
 
 int main(int argc, char* argv[]){
 	int	fd ;
@@ -25,7 +25,7 @@ int main(int argc, char* argv[]){
 	newfd = dup2(fd,0);
 #endif
 	if ( newfd != 0 ){
-		fprintf(stderr,"Could not duplicate fd to 0\n");
+		fprintf(stderr,"Could not duplicate fd(%d) to 0\n", newfd);
 		exit(1);
 	}
 	close(fd);
