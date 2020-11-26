@@ -1,15 +1,15 @@
-#include  <stdio.h>
-#include  <unistd.h>
-#include  <stdio.h>
-#include  <stdlib.h>
-#include  <sys/types.h>
-#include  <sys/socket.h>
-#include  <netinet/in.h>
-#include  <netdb.h>
-#include  <time.h>
-#include  <strings.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <netdb.h>
+#include <time.h>
+#include <strings.h>
+#include <ctype.h>
 
-#define   PORTNUM  9111
+#define   PORTNUM  13000 
 #define   HOSTLEN  256
 #define   oops(msg) { perror(msg) ; exit(1) ; }
 
@@ -42,18 +42,18 @@ int main(int ac, char *av[]){
 		oops( "listen" );
 
 	while ( 1 ){
-	       sock_fd = accept(sock_id, NULL, NULL);
+	    sock_fd = accept(sock_id, NULL, NULL);
 		printf("Wow! got a call!\n");
-	       if ( sock_fd == -1 )
-		       oops( "accept" );
+	    if ( sock_fd == -1 )
+		    oops( "accept" );
 
-	       sock_fp = fdopen(sock_fd,"w");
-	       if ( sock_fp == NULL )
-		       oops( "fdopen" );
+	    sock_fp = fdopen(sock_fd,"w");
+	    if ( sock_fp == NULL )
+		    oops( "fdopen" );
 
-	       thetime = time(NULL);
-	       fprintf( sock_fp, "The time here is .." );
-	       fprintf( sock_fp, "%s", ctime(&thetime) ); 
-	       fclose( sock_fp );
+	    thetime = time(NULL);
+	    fprintf( sock_fp, "The time here is .." );
+	    fprintf( sock_fp, "%s", ctime(&thetime) ); 
+	    fclose( sock_fp );
     }
 }
