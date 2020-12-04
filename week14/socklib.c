@@ -23,7 +23,7 @@ int make_server_socket_q(int portnum, int backlog){
     gethostname(hostname, HOSTLEN);
     hp = gethostbyname(hostname);
 
-    bcopy((void *)hp->h_addr, (void *)&saddr.sin_addr, hp->h_length);
+    saddr.sin_addr.s_addr = htonl(INADDR_ANY);
     saddr.sin_port = htons(portnum);
     saddr.sin_family = AF_INET;
     if (bind(sock_id, (struct sockaddr *)&saddr, sizeof(saddr)) != 0)
