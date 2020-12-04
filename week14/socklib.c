@@ -11,8 +11,6 @@ int make_server_socket(int portnum){
 
 int make_server_socket_q(int portnum, int backlog){
     struct sockaddr_in saddr; 
-    struct hostent *hp; 
-    char hostname[HOSTLEN]; 
     int sock_id;  
 
     sock_id = socket(PF_INET, SOCK_STREAM, 0); 
@@ -20,8 +18,6 @@ int make_server_socket_q(int portnum, int backlog){
         return -1;
 
     bzero((void *)&saddr, sizeof(saddr)); 
-    gethostname(hostname, HOSTLEN);
-    hp = gethostbyname(hostname);
 
     saddr.sin_addr.s_addr = htonl(INADDR_ANY);
     saddr.sin_port = htons(portnum);
