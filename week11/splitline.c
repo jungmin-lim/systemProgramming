@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "smsh.h"
+#include "varlib.h"
 
 #define is_delim(x) ((x) == ' ' || (x) == '\t')
 
@@ -31,6 +32,9 @@ char* next_cmd(char* prompt, FILE* fp){
 	}
 
 	buf[pos] = '\0';
+
+	buf = replace_variable(buf);
+
 	return buf;
 }
 

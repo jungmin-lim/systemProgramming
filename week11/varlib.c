@@ -82,6 +82,59 @@ static struct var* find_item(char* name, int first_blank){
 	return NULL;
 }
 
+char* replaceWordInText(const char *text, const char *oldWord, const char *newWord) {
+   int i = 0, cnt = 0;
+   int len1 = strlen(newWord);
+   int len2 = strlen(oldWord);
+   for (i = 0; text[i] != '\0'; i++) {
+      if (strstr(&text[i], oldWord) == &text[i]) {
+         cnt++;
+         i += len2 - 1;
+      }
+   }
+   char *newString = (char *)malloc(i + cnt * (len1 - len2) + 1);
+   i = 0;
+   while (*text) {
+      if (strstr(text, oldWord) == text) {
+         strcpy(&newString[i], newWord);
+         i += len1;
+         text += len2;
+      }
+      else
+      newString[i++] = *text++;
+   }
+
+   return newString;
+}
+
+char* replace_variable(char* buf){
+	char var[BUFSIZ];
+	char temp_val[BUFSIZ], val[BUFSIZ];
+	char* cp, * cp1;
+	struct var* v;
+
+    // replace variables with its value
+	cp = strchr(buf, '$');
+	while(cp != NULL){
+		sscanf(cp, "%s", var);
+		v = find_item(&var[1], 0);
+		if(v == NULL){
+			val[0] = '\0';
+		}
+		else{
+			strcpy(temp_val, v->str);
+			cp1=strchr(temp_val, '=');
+			*cp1 = '\0';
+			strcpy(val, cp1+1);
+		}
+		buf = replaceWordInText(buf, var, val);
+
+		cp = strchr(cp+1, '$');
+	}
+
+	return buf;
+}
+
 void VLlist(){
 	int i;
 

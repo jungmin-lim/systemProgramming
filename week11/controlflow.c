@@ -2,7 +2,7 @@
 #include <string.h>
 #include "smsh.h"
 
-enum states {NEUTRAL, WANT_THEN, THEN_BLOCK};
+enum states {NEUTRAL, WANT_THEN, THEN_BLOCK, ELSE_BLOCK};
 enum results {SUCCESS, FAIL};
 
 static int if_state = NEUTRAL;
@@ -23,12 +23,18 @@ int ok_to_execute(){
 	else if(if_state == THEN_BLOCK && if_result == FAIL){
 		rv = 0;
 	}
+	else if(if_state == ELSE_BLOCK && if_result == SUCCESS){
+		rv = 0;
+	}
+	else if(if_state == ELSE_BLOCK && if_result == FAIL){
+		rv = 1;
+	}
 
 	return rv;
 }
 
 int is_control_command(char* s){
-	return (strcmp(s, "if") == 0 || strcmp(s, "then") == 0 || strcmp(s, "fi") == 0);
+	return (strcmp(s, "if") == 0 || strcmp(s, "then") == 0 || strcmp(s, "else") == 0 || strcmp(s, "fi") == 0);
 }
 
 int do_control_command(char** args){
@@ -55,8 +61,17 @@ int do_control_command(char** args){
 			rv = 0;
 		}
 	}
-	else if(strcmp(cmd, "fi") == 0){
+	else if(strcmp(cmd, "else") == 0){
 		if(if_state != THEN_BLOCK){
+			rv = syn_err("else unexpected");
+		}
+		else{
+			if_state = ELSE_BLOCK;
+			rv = 0;
+		}
+	}
+	else if(strcmp(cmd, "fi") == 0){
+		if(if_state != THEN_BLOCK && if_state != ELSE_BLOCK){
 			rv = syn_err("fi unexpected");
 		}
 		else{

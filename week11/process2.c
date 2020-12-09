@@ -13,7 +13,7 @@ int process(char** args){
 	else if ( is_control_command(args[0]) )
 		rv = do_control_command(args);
 	else if ( ok_to_execute() )
-	if ( !builtin_command(args,&rv) )
+		if ( !builtin_command(args,&rv) )
 			rv = execute(args);
 	return rv;
 }
