@@ -3,7 +3,7 @@
 #include	<string.h>
 #include	<unistd.h>
 #include	<signal.h>
-#include	"hw8_smsh.h"
+#include	"Q1.h"
 
 #define	DFL_PROMPT	"> "
 
@@ -11,14 +11,13 @@ int main()
 {
 	char	*cmdline, *prompt, **arglist;
 	int	result, isBackground, c_pid = 0;
-	int count;
 	void	setup();
 
 	prompt = DFL_PROMPT ;
 	setup();
 
 	while ( (cmdline = next_cmd(prompt, stdin, &isBackground)) != NULL ){
-		if ( (arglist = splitline(cmdline, &count)) != NULL  ){
+		if ( (arglist = splitline(cmdline)) != NULL  ){
 			if(!strcmp(arglist[0], "exit")){
 				arglist = NULL;
 				kill(0, 2);

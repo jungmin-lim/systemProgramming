@@ -2,7 +2,7 @@
 #define No	0
 
 char *next_cmd();
-char **splitline(char *, int*);
+char **splitline(char *);
 void freelist(char **);
 void *emalloc(size_t);
 void *erealloc(void*, size_t);

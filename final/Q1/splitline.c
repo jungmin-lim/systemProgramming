@@ -1,7 +1,7 @@
 #include	<stdio.h>
 #include	<stdlib.h>
 #include	<string.h>
-#include	"hw8_smsh.h"
+#include	"Q1.h"
 
 char * next_cmd(char *prompt, FILE *fp, int *isBackground){
 	char	*buf ; 				/* the buffer		*/
@@ -43,7 +43,7 @@ char * next_cmd(char *prompt, FILE *fp, int *isBackground){
 
 #define	is_delim(x) ((x)==' '||(x)=='\t')
 
-char ** splitline(char *line, int* count){
+char ** splitline(char *line){
 	char	*newstr();
 	char	**args ;
 	int	spots = 0;			/* spots in table	*/

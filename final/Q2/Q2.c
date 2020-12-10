@@ -17,13 +17,37 @@ int main( int argc, char* argv[] ) {
 	int thepipe4[PIPE_ENDS];
 	int thepipe5[PIPE_ENDS];
 
+	char arglist[5][16][1024];
 	int pid1, pid2, pid3, pid4, pid5;
-	int newfd;
+	int newfd, state = 0, i;
+	int arg_count, opt_count;
 
-	if( argc < 2 ) {
-		fprintf( stderr, "Usage: %s <argument1> <argument2> ... <argument5>\n", argv[0] );
-		exit(1);
+	// parse string from argv
+	arg_count = 0;
+	for(i = 0; i < argc; i++){
+		opt_count = 0;
+		if(state){ // finish getting options
+			if(argv[i][strlen(argv[i])] == '\"'){
+				argv[i][strlen(argv[i])] == '\0';
+				strcpy(arglist[arg_count][opt_count], argv[i]);
+				state = 0;
+				arg_count++;
+			}
+			else{ // still getting options
+				strcpy(arglist[arg_count][opt_count], argv[i]);
+			}
+		}
+		else{ 
+			if(argv[i][0] == '\"'){ //start getting options
+				state = 1;
+			}
+			else{ // getting argument without options
+				strcpy(arglist[arg_count][0], argv[i]);
+				arg_count++;
+			}
+		}
 	}
+
 
 	if( argc > 2 ) {
 		if( pipe( thepipe1 ) == -1 ) {
